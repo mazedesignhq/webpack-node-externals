@@ -59,7 +59,7 @@ module.exports = function nodeExternals(options) {
     // return an externals function
     return function (...args) {
         const [arg1, arg2, arg3] = args;
-        let context = arg1.context;
+        let context = arg1;
         let request = arg2;
         let callback = arg3;
         // in case of webpack 5
