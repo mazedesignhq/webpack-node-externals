@@ -59,19 +59,20 @@ module.exports = function nodeExternals(options) {
     // return an externals function
     return function (...args) {
         const [arg1, arg2, arg3] = args;
-        // let context = arg1;
+        let context = arg1.context;
         let request = arg2;
         let callback = arg3;
         // in case of webpack 5
         if (arg1 && arg1.context && arg1.request) {
-            // context = arg1.context;
+            context = arg1.context;
             request = arg1.request;
             callback = arg2;
         }
         const moduleName = getModuleName(request, includeAbsolutePaths);
         if (
             utils.contains(nodeModules, moduleName) &&
-            !utils.containsPattern(allowlist, request)
+            !utils.containsPattern(allowlist, request) &&
+            !utils.containsPattern(options.allowFrom, context)
         ) {
             if (typeof importType === 'function') {
                 return callback(null, importType(request));
